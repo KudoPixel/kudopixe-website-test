@@ -42,17 +42,18 @@ jobs:
             --account-id "${{ vars.CLOUDFLARE_ACCOUNT_ID }}" \
             --d1 "${{ vars.D1_DATABASE_ID }}"
 
-        
       - name: Apply EmDash migrations
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           EMDASH_TARGET_FINGERPRINT: ${{ vars.EMDASH_TARGET_FINGERPRINT }}
         run: |
           pnpm emdash migrate \
+            --take-over-lock 1793288578779 \
             --account-id "${{ vars.CLOUDFLARE_ACCOUNT_ID }}" \
             --d1 "${{ vars.D1_DATABASE_ID }}" \
             --expected-target-fingerprint "$EMDASH_TARGET_FINGERPRINT"
 
+      
       - name: Verify migrations
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
